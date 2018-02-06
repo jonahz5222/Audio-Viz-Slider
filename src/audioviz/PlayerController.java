@@ -9,8 +9,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -109,14 +108,17 @@ public class PlayerController implements Initializable {
         }
         
         
-        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+        timeSlider.valueProperty().addListener((Observable ov) -> {
+                if (timeSlider.isValueChanging()) {
+                    
+                    mediaPlayer.seek(new Duration(timeSlider.getValue()));
+                    
+                }
+        });
 
-                System.out.println("Slider Value Changed (newValue: " + newValue.intValue() + ")\n");
-            }
-});
+
+
+        
     }
     
     private void selectVisualizer(ActionEvent event) {
@@ -170,6 +172,8 @@ public class PlayerController implements Initializable {
                 handleUpdate(timestamp, duration, magnitudes, phases);
             });
             filePathText.setText(file.getPath());
+            
+            
         } catch (Exception ex) {
             errorText.setText(ex.toString());
         }
@@ -184,6 +188,8 @@ public class PlayerController implements Initializable {
         currentVisualizer.start(numBands, vizPane);
         timeSlider.setMin(0);
         timeSlider.setMax(duration.toMillis());
+        
+        
     }
     
     private void handleEndOfMedia() {
