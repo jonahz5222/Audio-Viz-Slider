@@ -9,6 +9,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -105,6 +107,16 @@ public class PlayerController implements Initializable {
             });
             bandsMenu.getItems().add(menuItem);
         }
+        
+        
+        timeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number oldValue, Number newValue) {
+
+                System.out.println("Slider Value Changed (newValue: " + newValue.intValue() + ")\n");
+            }
+});
     }
     
     private void selectVisualizer(ActionEvent event) {
@@ -224,10 +236,10 @@ public class PlayerController implements Initializable {
         }
     }
     
-    @FXML
-    private void handleSliderPickup(ActionEvent event){
-        if(mediaPlayer != null){
-            System.out.println("pause");
-        }
-    }
+//    @FXML
+//    private void handleSliderPickup(ActionEvent event){
+//        if(mediaPlayer != null){
+//            System.out.println("pause");
+//        }
+//    }
 }
